@@ -1,5 +1,14 @@
 package org.zerock.j2.entity;
 
+/*
+ * FileBoard만 domain이다
+ * OneToMany는 PK를 가진애가 모든걸 관리함
+ * PK를 가진 상위Entity가 하위 Entity를 관리함
+ * 그러므로 하위 Entity는 domain이 아님 혼자서 삭제 불가능
+ * 
+ * 하위에 있는게 다른애와 연관관계가 있을 때만 OneToMany가 맞음
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +62,7 @@ public class FileBoard {
   //BathSize는 일괄처리 (20개까지는 한번에 처리)
   //쿼리가 in 조건에 들어가짐
   @BatchSize(size = 20)
-  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+  @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
   //image는 board쪽에 소속하게 만드는 속성
   @JoinColumn(name = "board")
   @Builder.Default
@@ -68,5 +77,9 @@ public class FileBoard {
     boardImage.changeOrd(images.size());
     images.add(boardImage);
   };
+
+  public void cleanImages(){
+    images.clear();
+  }
   
 }

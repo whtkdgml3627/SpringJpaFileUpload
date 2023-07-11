@@ -90,11 +90,48 @@ public class RepositoryTests {
   @Test
   @Transactional
   public void testListQuerydsl(){
-
     PageRequestDTO requestDTO = PageRequestDTO.builder().build();
 
     System.out.println(repository.list(requestDTO));
+  }
 
+  @Test
+  public void testSelectOne(){
+    Long bno = 100L;
+
+    FileBoard board = repository.selectOne(bno);
+
+    System.out.println(board);
+    System.out.println(board.getImages());
+  }
+
+  @Test
+  @Transactional
+  @Commit
+  public void testDelete(){
+    Long bno = 101L;
+
+    repository.deleteById(bno);
+  }
+
+  @Test
+  @Transactional
+  @Commit
+  public void testUpdate(){
+    Optional<FileBoard> result = repository.findById(20L);
+
+    FileBoard board = result.orElseThrow();
+
+    board.cleanImages();
+
+    FileBoardImage img1 = FileBoardImage.builder()
+      .uuid(UUID.randomUUID().toString())
+      .fname("ZZZZ.jpg")
+      .build();
+
+    board.addImage(img1);
+
+    repository.save(board);
   }
 
 }
