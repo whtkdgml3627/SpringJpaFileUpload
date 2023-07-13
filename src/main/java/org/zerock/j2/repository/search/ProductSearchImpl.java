@@ -89,6 +89,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
 
     //where 조건 ord가 0인 이미지 하나만 불러오기
     query.where(productImage.ord.eq(0));
+    query.where(product.delFlag.eq(Boolean.FALSE));
 
     //페이지번호 설정
     //음수 나왔을 때 0으로 만들어줌
