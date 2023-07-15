@@ -96,7 +96,7 @@ public class FileUploader {
           //아웃풋스트림 내보내는거
           File thumbOutFile = new File(path, "s_" + saveFileName);
   
-          Thumbnailator.createThumbnail(savFile, thumbOutFile, 200, 200);
+          Thumbnailator.createThumbnail(savFile, thumbOutFile, 350, 350);
         }
 
         //실제 파일 저장
