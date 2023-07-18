@@ -9,6 +9,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.j2.dto.MemberDTO;
 import org.zerock.j2.service.MemberService;
+import org.zerock.j2.service.SocialService;
+
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -19,6 +22,23 @@ public class MemberController {
 
   //service 의존성 주입
   private final MemberService memberService;
+  private final SocialService socialService;
+
+  //kakao login
+  @GetMapping("kakao")
+  public MemberDTO getAuthCode(
+    String code
+  ){
+    //화면에서 받은 인가코드 호출
+    log.info("=============================================================");
+    log.info(code);
+
+    String email = socialService.getKakaoEmail(code);
+
+    MemberDTO memberDTO = memberService.getMemberWithEmail(email);
+
+    return memberDTO;
+  }
 
   @PostMapping("login")
   public MemberDTO login(

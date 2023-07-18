@@ -9,6 +9,7 @@ import org.zerock.j2.entity.Member;
 import org.zerock.j2.repository.MemberRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Log4j2
@@ -58,5 +59,42 @@ public class MemberServiceImpl implements MemberService {
       throw new MemberLoginException(e.getMessage());
     }
     return memberDTO;
+  }
+
+  @Override
+  public MemberDTO getMemberWithEmail(String email) {
+    Optional<Member> result = memberRepository.findById(email);
+
+    //DB에 회원 데이터가 존재하는 경우
+    //isPresent() = 데이터가 존재 한다면
+    if(result.isPresent()){
+      //get 데이터 가져오는거
+      Member member = result.get();
+      //dto로 변환
+      MemberDTO dto = MemberDTO.builder()
+        .email(member.getEmail())
+        .nickname(member.getNickname())
+        .admin(member.isAdmin())
+        .build();
+
+      return dto;
+    }
+
+    //DB에 존재하지 않는 이메일인 경우
+    Member socialMember = Member.builder()
+      .email(email)
+      .pw(UUID.randomUUID().toString())
+      .nickname("SOCIAL_MEMBER")
+      .build();
+
+    memberRepository.save(socialMember);
+
+    MemberDTO dto = MemberDTO.builder()
+      .email(socialMember.getEmail())
+      .nickname(socialMember.getNickname())
+      .admin(socialMember.isAdmin())
+      .build();
+
+    return dto;
   }
 }

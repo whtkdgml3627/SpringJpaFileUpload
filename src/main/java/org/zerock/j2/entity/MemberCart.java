@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+//@ToString(exclude = "product")
 @Table(name = "member_cart", indexes = @Index(columnList = "cno, email"))
 public class MemberCart {
   //변수
@@ -17,6 +17,9 @@ public class MemberCart {
   private Long cno;       //pk
   private String email;   //email 회원
   private Long pno;       //pno 상품
+
+//  @ManyToOne(fetch = FetchType.LAZY)
+//  private Product product;
   
   //시간이 추가되어야함
 }
