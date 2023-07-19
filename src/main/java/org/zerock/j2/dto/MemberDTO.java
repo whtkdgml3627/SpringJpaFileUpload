@@ -15,5 +15,8 @@ public class MemberDTO {
   private String pw;        //비밀번호
   private String nickname;  //닉네임
   private boolean admin;    //어드민 사용자 체크
+  
+  private String accessToken;   //억세스토큰
+  private String refreshToken;  //리프레시토큰
 
 }
